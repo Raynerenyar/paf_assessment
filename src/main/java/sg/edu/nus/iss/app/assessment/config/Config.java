@@ -26,7 +26,6 @@ public class Config {
 
     @Bean
     public DataSource dataSource() {
-        System.out.println("testing <><><><><><<><><><><>");
 
         String url;
 
@@ -47,18 +46,17 @@ public class Config {
                     .append("/")
                     .append(env.getProperty(MYSQL_DATABASE)); // get shared env var
             url = urlBldr.toString();
-
         } else {
             // for local development
             url = env.getProperty(MYSQL_URL);
         }
+        System.out.println(url);
 
         DataSource ds = DataSourceBuilder.create()
                 .url(url)
                 .password(env.getProperty(MYSQL_PASSOWORD))
                 .username(env.getProperty(MYSQL_USER))
                 .build();
-        System.out.println("jdbctemplate >>>>>>>>>" + ds.toString());
         return ds;
         // return DataSourceBuilder.create()
         //         .url(url)
@@ -72,6 +70,11 @@ public class Config {
     public RedisTemplate<String, String> redisTemplate() {
 
         final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+
+        String hostName = env.getProperty(REDIS_HOST);
+        Integer port = Integer.parseInt(env.getProperty(REDIS_PORT));
+        String username = env.getProperty(REDIS_USERNAME);
+        String password = env.getProperty(REDIS_PASSWORD);
 
         config.setHostName(env.getProperty(REDIS_HOST));
         config.setPort(Integer.parseInt(env.getProperty(REDIS_PORT)));

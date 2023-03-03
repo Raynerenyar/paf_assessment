@@ -89,7 +89,6 @@ public class AccountController {
         transfer.setToAccountExist(true);
         transfer.setSufficientBalance(true);
 
-        System.out.println(binding.getFieldErrors().toString());
         if (binding.hasErrors()) {
             model.addAttribute("listOfAccounts", listOfAccounts);
             model.addAttribute("transfer", transfer);
@@ -119,6 +118,7 @@ public class AccountController {
                         transfer.setToName(x.getName());
                     }
                 });
+        System.out.println(transfer.toString());
         logsService.logTransactionToRedis(transactionId, transfer);
         model.addAttribute("transfer", transfer);
         model.addAttribute("transactionId", transactionId);

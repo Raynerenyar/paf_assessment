@@ -13,7 +13,7 @@ import sg.edu.nus.iss.app.assessment.repo.AccountsRepository;
 public class Util {
 
     public static String generateId() {
-        return UUID.randomUUID().toString().substring(0, 10);
+        return UUID.randomUUID().toString().substring(0, 8);
     }
 
     public static JsonObject logToRedis(String transactionId, Transfer transfer) {

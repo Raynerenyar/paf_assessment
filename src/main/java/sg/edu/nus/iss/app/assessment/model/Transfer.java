@@ -22,11 +22,15 @@ public class Transfer {
 
     private Boolean fromAccountExist = false;
 
+    private String fromName;
+
     @Size(min = 10, max = 10)
     @NotBlank
     private String toAccount;
 
     private Boolean toAccountExist = false;
+
+    private String toName;
 
     private Boolean sameAccount = false;
 

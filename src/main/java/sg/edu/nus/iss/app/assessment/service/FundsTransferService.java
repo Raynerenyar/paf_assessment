@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.app.assessment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,7 @@ public class FundsTransferService {
     private static final Logger logger = LoggerFactory.getLogger(FundsTransferService.class);
 
     @Transactional(rollbackFor = SomethingException.class)
-    public void transferAmount(String fromAccount, String toAccount, float amount) throws SomethingException {
+    public String transferAmount(String fromAccount, String toAccount, float amount) throws SomethingException {
         String transactionId = Util.generateId();
         float fromAccBal = acctRepo.getBalance(fromAccount).getBalance();
         float toAccBal = acctRepo.getBalance(toAccount).getBalance();
@@ -47,6 +48,7 @@ public class FundsTransferService {
         // to test if @transaction works use statement below
         // throw new SomethingException("Transfer of funds fail");
 
+        return transactionId;
     }
 
 }

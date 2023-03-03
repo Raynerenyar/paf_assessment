@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import sg.edu.nus.iss.app.assessment.model.Account;
 import sg.edu.nus.iss.app.assessment.model.Transfer;
 import sg.edu.nus.iss.app.assessment.repo.AccountsRepository;
 import sg.edu.nus.iss.app.assessment.service.FundsTransferService;
+import sg.edu.nus.iss.app.assessment.service.LogsAuditService;
 
 @Controller
 public class AccountController {
@@ -29,6 +31,9 @@ public class AccountController {
 
     @Autowired
     FundsTransferService fundsService;
+
+    @Autowired
+    LogsAuditService logsService;
 
     @GetMapping(path = "/")
     public String getLandingPage(Transfer transfer, Model model) {
@@ -43,6 +48,8 @@ public class AccountController {
     public String posting(@Valid Transfer transfer, BindingResult binding, Model model) {
 
         System.out.println("transfer object >>>> " + transfer.toString());
+
+        List<Account> listOfAccounts = acctRepo.getListAccounts();
 
         String fromAcc = transfer.getFromAccount();
         String toAcc = transfer.getToAccount();
@@ -84,25 +91,37 @@ public class AccountController {
 
         System.out.println(binding.getFieldErrors().toString());
         if (binding.hasErrors()) {
-            List<Account> listOfAccounts = acctRepo.getListAccounts();
             model.addAttribute("listOfAccounts", listOfAccounts);
             model.addAttribute("transfer", transfer);
             return "landing";
         }
-
+        String transactionId;
         try {
-            fundsService.transferAmount(fromAcc, toAcc, amount);
+            transactionId = fundsService.transferAmount(fromAcc, toAcc, amount);
         } catch (SomethingException e) {
             FieldError fieldErr = new FieldError("Transfer", "transferFail",
                     "Funds fail to transfer");
             binding.addError(fieldErr);
-            List<Account> listOfAccounts = acctRepo.getListAccounts();
             model.addAttribute("listOfAccounts", listOfAccounts);
             model.addAttribute("transfer", transfer);
             return "landing";
         }
         System.out.println("successful transfer");
         System.out.println(transfer.toString());
-        return "index";
+
+        listOfAccounts.stream()
+                .forEach(x -> {
+                    String accountId = x.getAccountId();
+                    if (accountId.equals(transfer.getFromAccount())) {
+                        transfer.setFromName(x.getName());
+                    }
+                    if (accountId.equals(transfer.getToAccount())) {
+                        transfer.setToName(x.getName());
+                    }
+                });
+        logsService.logTransactionToRedis(transactionId, transfer);
+        model.addAttribute("transfer", transfer);
+        model.addAttribute("transactionId", transactionId);
+        return "success";
     }
 }

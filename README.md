@@ -18,4 +18,4 @@ REDISUSERNAME=<redis username>
 REDISPASSWORD=<redis password>
 ```
 ### Environment variables used in
-[MySQL and Redis Configuration java file](src\main\java\sg\edu\nus\iss\app\assessment\config)
+[MySQL and Redis Configuration java file](https://github.com/Raynerenyar/paf_assessment/blob/main/src/main/java/sg/edu/nus/iss/app/assessment/config/Config.java)

@@ -8,12 +8,12 @@ LOCALDEVELOPMENT=<leave blank>
 MYSQLUSER=<mysql username>
 MYSQLPASSWORD=<mysql password>
 MYSQLDATABASE=<database name>
-MYSQLHOST=localhost
+MYSQLHOST=<mysql host>
 MYSQLPORT=<mysql port>
 MYSQL_URL=jdbc:mysql://${MYSQLHOST}/${MYSQLDATABASE}
 
-REDISHOST=localhost
-REDISPORT=<Redis port or 6379>
+REDISHOST=<redis host>
+REDISPORT=<redis port or 6379>
 REDISUSERNAME=<redis username>
 REDISPASSWORD=<redis password>
 ```

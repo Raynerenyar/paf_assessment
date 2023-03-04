@@ -18,7 +18,7 @@ REDISUSERNAME=<redis username>
 REDISPASSWORD=<redis password>
 ```
 ### Environment variables used in
-[MySQL and Redis Configuration java file](https://github.com/Raynerenyar/paf_assessment/blob/main/src/main/java/sg/edu/nus/iss/app/assessment/config/Config.java)
+[MySQL and Redis Configuration java file](src\main\java\sg\edu\nus\iss\app\assessment\config\Config.java)
 
 # For Railway deployment
-Use above variables and additionally insert in shared variable for `MYSQLDATABASE` as Railway defaults to `MYSQLDATABASE=railway`
+Railway uses the same above variables (except `LOCALDEVELOPMENT`) and manually insert in shared variable for `MYSQLDATABASE` as Railway defaults to `MYSQLDATABASE=railway`

@@ -1,8 +1,9 @@
 # For local development
 ### Set up environment variables
+Config set up to use these environment variables directly when in local dev and in railway deployment
+
+LOCALHOST DEVELOPMENT
 ```
-# Config set up to use these environment variables directly when in local dev and in railway deployment
-# LOCALHOST DEVELOPMENT
 
 LOCALDEVELOPMENT=<leave blank>
 MYSQLUSER=<mysql username>

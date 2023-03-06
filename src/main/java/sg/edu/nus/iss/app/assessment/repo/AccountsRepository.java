@@ -1,7 +1,6 @@
 package sg.edu.nus.iss.app.assessment.repo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,8 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import sg.edu.nus.iss.app.assessment.model.Account;
 
-import static sg.edu.nus.iss.app.assessment.Queries.*;
+import static sg.edu.nus.iss.app.assessment.repo.Queries.*;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -69,12 +69,12 @@ public class AccountsRepository {
                 accountId);
     }
 
-    public int updateBalance(String accountId, float balance) {
+    public int updateBalance(String accountId, BigDecimal balance) {
         return jdbcTemplate.update(UPDATE_BAL_SQL, new PreparedStatementSetter() {
 
             @Override
             public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setFloat(1, balance);
+                ps.setBigDecimal(1, balance);
                 ps.setString(2, accountId);
             }
 

@@ -3,12 +3,9 @@ package sg.edu.nus.iss.app.assessment.config;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
@@ -30,7 +27,7 @@ public class Config {
         String url;
 
         // if not on local dev
-        if (!(env.containsProperty(LOCAL_DEV))) {
+        if (!(env.getProperty(MYSQL_HOST).equals("localhost"))) {
 
             // get railway's mysql url
             url = env.getProperty(MYSQL_URL);
@@ -50,19 +47,11 @@ public class Config {
             // for local development
             url = env.getProperty(MYSQL_URL);
         }
-        System.out.println(url);
-
-        DataSource ds = DataSourceBuilder.create()
+        return DataSourceBuilder.create()
                 .url(url)
                 .password(env.getProperty(MYSQL_PASSOWORD))
                 .username(env.getProperty(MYSQL_USER))
                 .build();
-        return ds;
-        // return DataSourceBuilder.create()
-        //         .url(url)
-        //         .password(env.getProperty(MYSQL_PASSOWORD))
-        //         .username(env.getProperty(MYSQL_USER))
-        //         .build();
 
     }
 
@@ -70,11 +59,6 @@ public class Config {
     public RedisTemplate<String, String> redisTemplate() {
 
         final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-
-        String hostName = env.getProperty(REDIS_HOST);
-        Integer port = Integer.parseInt(env.getProperty(REDIS_PORT));
-        String username = env.getProperty(REDIS_USERNAME);
-        String password = env.getProperty(REDIS_PASSWORD);
 
         config.setHostName(env.getProperty(REDIS_HOST));
         config.setPort(Integer.parseInt(env.getProperty(REDIS_PORT)));
@@ -84,10 +68,6 @@ public class Config {
 
         config.setDatabase(0);
 
-        // System.out.println(config.getDatabase());
-        // System.out.println(config.getUsername());
-        // System.out.println(config.getPort());
-        // System.out.println(config.getPassword().isPresent());
         final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().build();
         final JedisConnectionFactory jedisFac = new JedisConnectionFactory(config, jedisClient);
         jedisFac.afterPropertiesSet();
@@ -99,7 +79,6 @@ public class Config {
 
         redisTemplate.setKeySerializer(new StringRedisSerializer()); // this is for direct key value in redis
         redisTemplate.setValueSerializer(new StringRedisSerializer()); // enable redis to store java object on the value column
-        System.out.println("redistemplate >>>>>>>>>>>> " + redisTemplate.toString());
         return redisTemplate;
     };
 

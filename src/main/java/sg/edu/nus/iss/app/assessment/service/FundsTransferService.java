@@ -1,52 +1,49 @@
 package sg.edu.nus.iss.app.assessment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.math.BigDecimal;
 
-import sg.edu.nus.iss.app.assessment.Util;
-import sg.edu.nus.iss.app.assessment.exception.SomethingException;
+import sg.edu.nus.iss.app.assessment.exception.TransactionFailedException;
 import sg.edu.nus.iss.app.assessment.repo.AccountsRepository;
+import sg.edu.nus.iss.app.assessment.util.Util;
 
 @Service
 public class FundsTransferService {
 
     @Autowired
-    AccountsRepository acctRepo;
+    private AccountsRepository acctRepo;
 
-    private static final Logger logger = LoggerFactory.getLogger(FundsTransferService.class);
+    @Transactional(rollbackFor = TransactionFailedException.class)
+    public String transferAmount(String fromAccount, String toAccount, BigDecimal amount)
+            throws TransactionFailedException {
 
-    @Transactional(rollbackFor = SomethingException.class)
-    public String transferAmount(String fromAccount, String toAccount, float amount) throws SomethingException {
+        // check if account exist
+        if (!(acctRepo.doesAccountExist(fromAccount) || acctRepo.doesAccountExist(toAccount))) {
+            throw new TransactionFailedException("Accounts dont exist");
+        }
+
         String transactionId = Util.generateId();
-        float fromAccBal = acctRepo.getBalance(fromAccount).getBalance();
-        float toAccBal = acctRepo.getBalance(toAccount).getBalance();
+        BigDecimal fromAccBal = acctRepo.getBalance(fromAccount).getBalance();
+        BigDecimal toAccBal = acctRepo.getBalance(toAccount).getBalance();
 
-        fromAccBal -= amount;
-        toAccBal += amount;
+        // checks if there's sufficient balance
+        if (fromAccBal.compareTo(toAccBal) == -1) {
+            throw new TransactionFailedException("Account " + fromAccount + " has insufficient balance");
+        }
 
+        fromAccBal.add(amount.negate());
+        toAccBal.add(amount);
+
+        // updates balances
         int resultOne = acctRepo.updateBalance(fromAccount, fromAccBal);
         int resultTwo = acctRepo.updateBalance(toAccount, toAccBal);
 
         if (resultOne != 1 || resultTwo != 1) {
-            try {
-                throw new SomethingException("Transfer of funds fail");
-            } catch (Exception e) {
-                if (e instanceof SomethingException) {
-                    logger.info(e.getLocalizedMessage());
-                    throw new SomethingException();
-                }
-                logger.error(e.getMessage());
-
-            }
+            throw new TransactionFailedException("Transfer of funds fail");
         }
-
-        // to test if @transaction works use statement below
-        // throw new SomethingException("Transfer of funds fail");
 
         return transactionId;
     }

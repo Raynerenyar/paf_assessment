@@ -14,11 +14,12 @@
             <tr>
                 <td>From account: </td>
                 <td>
-                    <!-- <input type="text" name="" id="" data-th-field="*{fromAccount}"> -->
-                    <select name="fromAccount" id="" >
+                    <select id="" data-th-field="*{fromAccount}">
                         <span data-th-each="account : ${listOfAccounts}">
-                            <!-- "${account.name} +' ('+${account.accountId} + ')'" -->
-                            <option value="" data-th-text="${account.name} +' ('+${account.accountId} + ')'" data-th-value="${account.accountId}" data-th-field="${transfer.fromAccount}"></option>
+                            <option 
+                                data-th-text="${account.name} +' ('+${account.accountId} + ')'" 
+                                data-th-value="${account.accountId}">
+                            </option>
                         </span>
                     </select>
                 </td>
@@ -26,10 +27,12 @@
             <tr>
                 <td>To account: </td>
                 <td>
-                    <!-- <input type="text" name="" id="" data-th-field="*{toAccount}"> -->
-                    <select name="toAccount" id="" >
+                    <select id="" data-th-field="*{toAccount}">
                         <span data-th-each="account : ${listOfAccounts}">
-                            <option value="" data-th-text="${account.name} +' ('+${account.accountId} + ')'" data-th-value="${account.accountId}" data-th-field="${transfer.toAccount}"></option>
+                            <option 
+                                data-th-text="${account.name} +' ('+${account.accountId} + ')'"
+                                data-th-value="${account.accountId}" >
+                            </option>
                         </span>
                     </select>
                 </td>
@@ -37,11 +40,11 @@
             <tr>
                 <td>Amount: </td>
                 <td>
-                    <input type="number" name="" id="" data-th-field="*{amount}">
+                    <input type="number" step=".0000001" name="" id="" data-th-field="*{amount}">
                 </td>
             </tr>
             <tr>
-                <td>Comments</td>
+                <td>Comments: </td>
                 <td>
                     <textarea name="" id="" cols="30" rows="10" placeholder="Type here" data-th-field="*{comments}"></textarea>
                 </td>
@@ -54,11 +57,12 @@
             </tr>
         </table>
         <table data-th-if="${#fields.hasAnyErrors()}">
-            <th>
-                Errors:
-            </th>
-            <tr data-th-each="err : ${#fields.allErrors()}">
-                <td data-th-text="${err}"></td>
+            <td >
+               <b>Errors:</b>
+            </td>
+            <tr data-th-each="err : ${listOfErr}">
+                <td style="white-space: pre-line" data-th-text="${err.getField()}+': '"></td>
+                <td data-th-text="${err.getDefaultMessage()}"></td>
             </tr>
         </table>
 

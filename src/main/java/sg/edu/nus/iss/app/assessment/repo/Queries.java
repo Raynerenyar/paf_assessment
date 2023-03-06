@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.app.assessment;
+package sg.edu.nus.iss.app.assessment.repo;
 
 public class Queries {
 

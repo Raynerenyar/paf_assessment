@@ -9,21 +9,19 @@
 <body>
     <p data-th-object="${transfer}">
         <div>
-            Your transfer of $
-            <span data-th-text="${transfer.amount}"></span>
+            Your transfer of 
+            <span data-th-text="'$'+${transfer.amount}"></span>
             from 
             <span data-th-text="${transfer.fromName}"></span>
-            (
-            <span data-th-text="${transfer.fromAccount}"></span>
-            ) to
-            <span data-th-text="${transfer.toName}"></span>
-            (
-            <span data-th-text="${transfer.toAccount}"></span>
-            ) is successful.
+            <span data-th-text="'('+${transfer.fromAccount}+')'"></span>
+            to
+            <span data-th-text="${transfer.toName}"></span>s
+            <span data-th-text="'('+${transfer.toAccount}+')'"></span>
+            is successful.
         </div>
         <div>
             Transaction id is
-            <span data-th-text="${transactionId}"></span>
+            <span data-th-text="${transactionId}+'.'"></span>
         </div>
     </p>
 </body>

@@ -15,8 +15,9 @@
                 <td>From account: </td>
                 <td>
                     <select id="" data-th-field="*{fromAccount}">
-                        <span data-th-each="account : ${listOfAccounts}">
+                        <span>
                             <option 
+                                data-th-each="account : ${listOfAccounts}"
                                 data-th-text="${account.name} +' ('+${account.accountId} + ')'" 
                                 data-th-value="${account.accountId}">
                             </option>
@@ -28,8 +29,9 @@
                 <td>To account: </td>
                 <td>
                     <select id="" data-th-field="*{toAccount}">
-                        <span data-th-each="account : ${listOfAccounts}">
+                        <span>
                             <option 
+                                data-th-each="account : ${listOfAccounts}"
                                 data-th-text="${account.name} +' ('+${account.accountId} + ')'"
                                 data-th-value="${account.accountId}" >
                             </option>
@@ -46,7 +48,7 @@
             <tr>
                 <td>Comments: </td>
                 <td>
-                    <textarea name="" id="" cols="30" rows="10" placeholder="Type here" data-th-field="*{comments}"></textarea>
+                    <textarea name="" wrap="hard" style="resize: none;" none id="" cols="30" rows="10" placeholder="Type here" data-th-field="*{comments}"></textarea>
                 </td>
             </tr>
             <tr>

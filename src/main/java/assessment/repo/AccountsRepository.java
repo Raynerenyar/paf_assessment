@@ -1,11 +1,8 @@
 package assessment.repo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import assessment.model.Account;
@@ -13,10 +10,6 @@ import assessment.model.Account;
 import static assessment.repo.Queries.*;
 
 import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -26,42 +19,18 @@ public class AccountsRepository {
     JdbcTemplate jdbcTemplate;
 
     public Boolean doesAccountExist(String accountId) {
-
-        return jdbcTemplate.query(GET_INDIVIDUAL_ACCOUNT_SQL, new PreparedStatementSetter() {
-
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setString(1, accountId);
-            }
-
-        }, new ResultSetExtractor<Boolean>() {
-
-            @Override
-            public Boolean extractData(ResultSet rs) throws SQLException, DataAccessException {
-                if (rs.next()) {
-                    return true;
-                }
-                return false;
-            }
-
-        });
+        Object[] args = new Object[] { accountId };
+        Account acc = jdbcTemplate.queryForObject(GET_INDIVIDUAL_ACCOUNT_SQL,
+                BeanPropertyRowMapper.newInstance(Account.class), args);
+        if (acc != null) {
+            return true;
+        }
+        return false;
     }
 
     public List<Account> getListAccounts() {
-        return jdbcTemplate.query(GET_LIST_ACCOUNTS_SQL, new ResultSetExtractor<List<Account>>() {
-
-            List<Account> list = new LinkedList<>();
-
-            @Override
-            public List<Account> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                while (rs.next()) {
-                    BeanPropertyRowMapper<Account> bprm = new BeanPropertyRowMapper<>(Account.class);
-                    list.add(bprm.mapRow(rs, 0));
-                }
-                return list;
-            }
-
-        });
+        return jdbcTemplate.query(GET_LIST_ACCOUNTS_SQL,
+                BeanPropertyRowMapper.newInstance(Account.class));
     }
 
     public Account getBalance(String accountId) {
@@ -70,14 +39,17 @@ public class AccountsRepository {
     }
 
     public int updateBalance(String accountId, BigDecimal balance) {
-        return jdbcTemplate.update(UPDATE_BAL_SQL, new PreparedStatementSetter() {
+        Object[] args = new Object[] { balance, accountId };
+        return jdbcTemplate.update(UPDATE_BAL_SQL, args);
+    }
 
-            @Override
-            public void setValues(PreparedStatement ps) throws SQLException {
-                ps.setBigDecimal(1, balance);
-                ps.setString(2, accountId);
-            }
+    // method not used but could be when transferring funds between accounts
+    public int[] batchUpdate(String fromAccount, String toAccount, BigDecimal fromBalance, BigDecimal toBalance) {
 
-        });
+        Object[] args1 = new Object[] { fromAccount, fromBalance };
+        Object[] args2 = new Object[] { toAccount, toBalance };
+        List<Object[]> argsList = List.of(args1, args2);
+        return jdbcTemplate.batchUpdate(UPDATE_BAL_SQL, argsList);
+
     }
 }

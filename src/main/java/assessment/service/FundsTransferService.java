@@ -22,15 +22,15 @@ public class FundsTransferService {
 
         // check if account exist
         if (!(acctRepo.doesAccountExist(fromAccount) || acctRepo.doesAccountExist(toAccount))) {
-            throw new TransactionFailedException("Accounts dont exist");
+            throw new TransactionFailedException("Accounts does not exist");
         }
 
         String transactionId = Util.generateId();
         BigDecimal fromAccBal = acctRepo.getBalance(fromAccount).getBalance();
         BigDecimal toAccBal = acctRepo.getBalance(toAccount).getBalance();
 
-        // checks if there's sufficient balance
-        if (fromAccBal.compareTo(toAccBal) == -1) {
+        // checks if there's sufficient balance for deduction in from-account
+        if (fromAccBal.compareTo(amount) == -1) {
             throw new TransactionFailedException("Account " + fromAccount + " has insufficient balance");
         }
 

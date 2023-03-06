@@ -73,8 +73,10 @@ public class AccountController {
             transactionId = fundsService.transferAmount(fromAcc, toAcc, amount);
         } catch (TransactionFailedException e) {
             logger.error(e.getMessage());
-            FieldError fieldErr = new FieldError(TRANSFER_OBJECT_NAME, "Transfer Fail",
-                    "Funds fail to transfer");
+            FieldError fieldErr = new FieldError(
+                    TRANSFER_OBJECT_NAME,
+                    "Transfer Fail",
+                    e.getMessage());
             binding.addError(fieldErr);
             model.addAttribute("listOfAccounts", listOfAccounts);
             model.addAttribute(TRANSFER_OBJECT_NAME, transfer);
@@ -84,13 +86,13 @@ public class AccountController {
 
         // assigning names to accountId in transfer object
         listOfAccounts.stream()
-                .forEach(x -> {
-                    String accountId = x.getAccountId();
+                .forEach(account -> {
+                    String accountId = account.getAccountId();
                     if (accountId.equals(transfer.getFromAccount())) {
-                        transfer.setFromName(x.getName());
+                        transfer.setFromName(account.getName());
                     }
                     if (accountId.equals(transfer.getToAccount())) {
-                        transfer.setToName(x.getName());
+                        transfer.setToName(account.getName());
                     }
                 });
 

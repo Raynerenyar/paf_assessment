@@ -29,15 +29,10 @@ public class Config {
         // if not on local dev
         if (!(env.getProperty(MYSQL_HOST).equals("localhost"))) {
 
-            // get railway's mysql url
-            url = env.getProperty(MYSQL_URL);
-            int firstIndex = url.indexOf("@");
-            int lastIndex = url.lastIndexOf(":");
-            String host = url.substring(firstIndex + 1, lastIndex);
             StringBuilder urlBldr = new StringBuilder()
                     .append("jdbc:")
                     .append("mysql://")
-                    .append(host)
+                    .append(env.getProperty(MYSQL_HOST))
                     .append(":")
                     .append(env.getProperty(MYSQL_PORT))
                     .append("/")

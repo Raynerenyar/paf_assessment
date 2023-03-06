@@ -14,6 +14,6 @@ public class Queries {
                                 """;
 
         public static final String UPDATE_BAL_SQL = """
-                        UPDATE accounts SET balance = ? WHERE account_id = ?;
+                        UPDATE accounts SET balance = ? WHERE account_id = ?
                         """;
 }

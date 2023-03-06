@@ -1,4 +1,6 @@
-package sg.edu.nus.iss.app.assessment.config;
+package assessment.config;
+
+import static assessment.Constants.*;
 
 import javax.sql.DataSource;
 
@@ -12,8 +14,6 @@ import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-
-import static sg.edu.nus.iss.app.assessment.Constants.*;
 
 @Configuration
 public class Config {

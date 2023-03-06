@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.app.assessment.model;
+package assessment.model;
 
 import java.math.BigDecimal;
 

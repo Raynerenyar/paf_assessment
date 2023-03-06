@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.app.assessment.exception;
+package assessment.exception;
 
 public class TransactionFailedException extends Exception {
     public TransactionFailedException() {

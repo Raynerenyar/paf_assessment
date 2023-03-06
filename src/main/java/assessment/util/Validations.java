@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.app.assessment.util;
+package assessment.util;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import sg.edu.nus.iss.app.assessment.model.Transfer;
-import sg.edu.nus.iss.app.assessment.repo.AccountsRepository;
+import assessment.model.Transfer;
+import assessment.repo.AccountsRepository;
 
-import static sg.edu.nus.iss.app.assessment.Constants.*;
+import static assessment.Constants.*;
 import static java.util.Map.entry;
 
 /* 

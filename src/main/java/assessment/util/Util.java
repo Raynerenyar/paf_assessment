@@ -1,11 +1,11 @@
-package sg.edu.nus.iss.app.assessment.util;
+package assessment.util;
 
 import java.util.Date;
 import java.util.UUID;
 
+import assessment.model.Transfer;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
-import sg.edu.nus.iss.app.assessment.model.Transfer;
 
 public class Util {
 

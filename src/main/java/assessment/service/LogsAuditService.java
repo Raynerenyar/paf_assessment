@@ -1,12 +1,12 @@
-package sg.edu.nus.iss.app.assessment.service;
+package assessment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import assessment.model.Transfer;
+import assessment.util.Util;
 import jakarta.json.JsonObject;
-import sg.edu.nus.iss.app.assessment.model.Transfer;
-import sg.edu.nus.iss.app.assessment.util.Util;
 
 @Service
 public class LogsAuditService {

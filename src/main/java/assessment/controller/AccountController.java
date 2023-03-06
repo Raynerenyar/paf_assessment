@@ -1,4 +1,6 @@
-package sg.edu.nus.iss.app.assessment.controller;
+package assessment.controller;
+
+import static assessment.Constants.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,19 +14,18 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import assessment.exception.TransactionFailedException;
+import assessment.model.Account;
+import assessment.model.Transfer;
+import assessment.repo.AccountsRepository;
+import assessment.service.FundsTransferService;
+import assessment.service.LogsAuditService;
+import assessment.util.Validations;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.validation.Valid;
-import sg.edu.nus.iss.app.assessment.exception.TransactionFailedException;
-import sg.edu.nus.iss.app.assessment.model.Account;
-import sg.edu.nus.iss.app.assessment.model.Transfer;
-import sg.edu.nus.iss.app.assessment.repo.AccountsRepository;
-import sg.edu.nus.iss.app.assessment.service.FundsTransferService;
-import sg.edu.nus.iss.app.assessment.service.LogsAuditService;
-import sg.edu.nus.iss.app.assessment.util.Validations;
-
-import static sg.edu.nus.iss.app.assessment.Constants.*;
 
 @Controller
 public class AccountController {

@@ -1,14 +1,14 @@
-package sg.edu.nus.iss.app.assessment.service;
+package assessment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import assessment.exception.TransactionFailedException;
+import assessment.repo.AccountsRepository;
+import assessment.util.Util;
 
-import sg.edu.nus.iss.app.assessment.exception.TransactionFailedException;
-import sg.edu.nus.iss.app.assessment.repo.AccountsRepository;
-import sg.edu.nus.iss.app.assessment.util.Util;
+import java.math.BigDecimal;
 
 @Service
 public class FundsTransferService {

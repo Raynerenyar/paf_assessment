@@ -15,13 +15,12 @@
                 <td>From account: </td>
                 <td>
                     <select id="" data-th-field="*{fromAccount}">
-                        <span>
+                            <option value="" hidden></option>
                             <option 
                                 data-th-each="account : ${listOfAccounts}"
                                 data-th-text="${account.name} +' ('+${account.accountId} + ')'" 
                                 data-th-value="${account.accountId}">
                             </option>
-                        </span>
                     </select>
                 </td>
             </tr>
@@ -29,13 +28,12 @@
                 <td>To account: </td>
                 <td>
                     <select id="" data-th-field="*{toAccount}">
-                        <span>
+                            <option value="" hidden></option>
                             <option 
                                 data-th-each="account : ${listOfAccounts}"
                                 data-th-text="${account.name} +' ('+${account.accountId} + ')'"
                                 data-th-value="${account.accountId}" >
                             </option>
-                        </span>
                     </select>
                 </td>
             </tr>

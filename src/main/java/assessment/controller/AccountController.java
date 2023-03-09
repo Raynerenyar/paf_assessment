@@ -53,7 +53,7 @@ public class AccountController {
     @PostMapping(path = "/transfer", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String posting(@Valid Transfer transfer, BindingResult binding, Model model) {
 
-        // sends object to validate
+        // pass entity for validation
         binding = validations.validateThis(transfer, binding, acctRepo);
 
         // if any input validation error
